@@ -18,28 +18,28 @@
      "id": "i2",
      "name": "Osmaniye Simidi",
      "desc": "",
-     "price": "",
+     "price": "15",
      "on": true
     },
     {
      "id": "i1",
      "name": "Tereyağlı Simit",
      "desc": "",
-     "price": "",
+     "price": "25",
      "on": true
     },
     {
      "id": "i3",
      "name": "Ankara Simidi",
      "desc": "",
-     "price": "",
+     "price": "20",
      "on": true
     },
     {
      "id": "i4",
      "name": "Sütlü Simit",
      "desc": "",
-     "price": "",
+     "price": "20",
      "on": true
     }
    ]
@@ -759,5 +759,5 @@
   "phone": "0541 276 26 16",
   "address": "Raufbey Mah. Adnan Menderes Cd. No: 21/B, Osmaniye"
  },
- "guncelleme": "2026-10-07T11:17:16.910Z"
+ "guncelleme": "2026-10-07T11:19:28.560Z"
 }
