@@ -15,15 +15,15 @@
    "desc": "",
    "items": [
     {
-     "id": "i1",
-     "name": "Tereyağlı Simit",
+     "id": "i2",
+     "name": "Osmaniye Simidi",
      "desc": "",
      "price": "",
      "on": true
     },
     {
-     "id": "i2",
-     "name": "Osmaniye Simidi",
+     "id": "i1",
+     "name": "Tereyağlı Simit",
      "desc": "",
      "price": "",
      "on": true
@@ -759,5 +759,5 @@
   "phone": "0541 276 26 16",
   "address": "Raufbey Mah. Adnan Menderes Cd. No: 21/B, Osmaniye"
  },
- "guncelleme": "2026-10-07T10:40:53.739Z"
+ "guncelleme": "2026-10-07T11:17:16.910Z"
 }
