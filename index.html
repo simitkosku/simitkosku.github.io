@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Simit Köşkü Menü</title>
+<meta name="description" content="Simit Köşkü Fırın · Cafe, Osmaniye — dijital menü">
+<meta name="theme-color" content="#1A1815">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='31' fill='%23F2B035'/%3E%3Cpath d='M25 58 L28.5 30 H35.5 L39 58 Z' fill='%231A1815'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lobster&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,800&display=swap">
+<link rel="stylesheet" href="stil.css">
+</head>
+<body>
+<header class="wrap hero">
+  <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="31" fill="#F2B035"/><path d="M25 58 L28.5 30 H35.5 L39 58 Z" fill="#1A1815"/><path d="M29.5 58 V50 a2.5 2.5 0 0 1 5 0 V58 Z" fill="#F2B035"/><g transform="translate(32 27) rotate(45)" fill="#1A1815"><rect x="-2" y="-21" width="4" height="21" rx="1"/><rect x="-2" y="-21" width="4" height="21" rx="1" transform="rotate(90)"/><rect x="-2" y="-21" width="4" height="21" rx="1" transform="rotate(180)"/><rect x="-2" y="-21" width="4" height="21" rx="1" transform="rotate(270)"/><circle r="3.5"/></g><g transform="translate(32 27) rotate(45)" fill="none" stroke="#1A1815" stroke-width="1.4"><path d="M2 -19 h5 v16 h-5"/><path d="M19 2 v5 h-16 v-5"/><path d="M-2 19 h-5 v-16 h5"/><path d="M-19 -2 v-5 h16 v5"/></g></svg>
+  <div class="brand"><h1>Simit Köşkü</h1><p>Fırın · Cafe · Osmaniye</p></div>
+</header>
+<nav class="nav" aria-label="Menü bölümleri"><div class="wrap" id="chips"></div></nav>
+<main class="wrap" id="menu"><p class="loading">Menü yükleniyor…</p></main>
+<footer class="wrap" id="info"></footer>
+<script>
+(function () {
+  "use strict";
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function slug(s) { return s.toLowerCase().replace(/ç/g, "c").replace(/ğ/g, "g").replace(/ı/g, "i").replace(/ö/g, "o").replace(/ş/g, "s").replace(/ü/g, "u").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
+  function price(p) { p = String(p || "").trim(); if (!p) return ""; return /^[\d.,]+$/.test(p) ? p.replace(".", ",") + " ₺" : p; }
+
+  function render(d) {
+    var groups = d.groups.filter(function (g) { return d.cats.some(function (c) { return c.group === g && c.items.some(function (i) { return i.on; }); }); });
+    document.getElementById("chips").innerHTML = groups.map(function (g) { return '<a class="chip" href="#' + slug(g) + '">' + esc(g) + "</a>"; }).join("");
+    var h = "";
+    groups.forEach(function (g) {
+      h += '<section class="group" id="' + slug(g) + '"><h2>' + esc(g) + "</h2>";
+      d.cats.filter(function (c) { return c.group === g; }).forEach(function (c) {
+        var its = c.items.filter(function (i) { return i.on; }); if (!its.length) return;
+        h += '<div class="cat"><h3>' + esc(c.name) + "</h3>" + (c.desc ? '<p class="cdesc">' + esc(c.desc) + "</p>" : "") + '<ul class="items">';
+        its.forEach(function (i) {
+          var pr = price(i.price);
+          h += '<li class="item"><div class="row"><span class="nm">' + esc(i.name) + "</span>" + (pr ? '<span class="dots"></span><span class="pr">' + esc(pr) + "</span>" : "") + "</div>" + (i.desc ? '<p class="ds">' + esc(i.desc) + "</p>" : "") + "</li>";
+        });
+        h += "</ul></div>";
+      });
+      h += "</section>";
+    });
+    document.getElementById("menu").innerHTML = h;
+    var inf = d.info || {}, f = "<div><strong>Simit Köşkü Fırın · Cafe</strong></div>";
+    if (inf.address) f += "<div>" + esc(inf.address) + "</div>";
+    if (inf.phone) f += '<div>Sipariş: <a href="tel:' + esc(inf.phone.replace(/\s/g, "")) + '"><strong>' + esc(inf.phone) + "</strong></a></div>";
+    if (inf.instagram) f += '<div>Instagram: <a href="https://www.instagram.com/' + encodeURIComponent(inf.instagram) + '/" target="_blank" rel="noopener">@' + esc(inf.instagram) + "</a></div>";
+    f += '<div class="note">Fiyatı yazılmayan ürünler için lütfen kasaya sorunuz.</div>';
+    document.getElementById("info").innerHTML = f;
+    if (location.hash) { var t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
+  }
+
+  fetch("menu.json?v=" + Date.now(), { cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(render)
+    .catch(function () { document.getElementById("menu").innerHTML = '<p class="loading">Menü şu an yüklenemedi. Lütfen sayfayı yenileyin.</p>'; });
+})();
+</script>
+</body>
+</html>

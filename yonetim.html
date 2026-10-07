@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Simit Köşkü Menü Yönetimi</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lobster&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,800&display=swap">
+<link rel="stylesheet" href="stil.css">
+</head>
+<body>
+<div id="root"></div>
+<script>
+(function () {
+  "use strict";
+  /* Menü verisi bu sitenin GitHub deposundaki menu.json dosyasındadır.
+     Kaydet: GitHub API ile menu.json güncellenir (giriş anahtarı sadece bu tarayıcıda saklanır). */
+  var KEY = "simit-menu-yonetim";
+  var root = document.getElementById("root");
+  var cfg = load();
+  var state = null, sha = null, dirty = false, busy = false, armed = null;
+
+  function load() {
+    var c = {};
+    try { c = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+    var host = location.hostname, m = host.match(/^([^.]+)\.github\.io$/i);
+    if (!c.owner && m) c.owner = m[1];
+    if (!c.repo && m) { var seg = location.pathname.split("/").filter(Boolean)[0]; c.repo = seg && !/\.html$/.test(seg) ? seg : host; }
+    return c;
+  }
+  function saveCfg() { try { localStorage.setItem(KEY, JSON.stringify(cfg)); } catch (e) {} }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function uid(p) { return p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function b64dec(b) { var bin = atob(b.replace(/\n/g, "")), u = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return new TextDecoder().decode(u); }
+  function b64enc(s) { var u = new TextEncoder().encode(s), bin = ""; for (var i = 0; i < u.length; i++) bin += String.fromCharCode(u[i]); return btoa(bin); }
+  function api(method, body) {
+    return fetch("https://api.github.com/repos/" + encodeURIComponent(cfg.owner) + "/" + encodeURIComponent(cfg.repo) + "/contents/menu.json", {
+      method: method,
+      headers: { "Authorization": "Bearer " + cfg.token, "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" },
+      body: body ? JSON.stringify(body) : undefined, cache: "no-store"
+    }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { j._status = r.status; return j; }); });
+  }
+  function errText(st) {
+    if (st === 401) return "Giriş anahtarı geçersiz ya da süresi dolmuş. Yeni bir anahtar oluşturup tekrar girin.";
+    if (st === 403) return "Bu anahtarın menüyü değiştirme izni yok. Anahtarı oluştururken “Contents: Read and write” iznini verin.";
+    if (st === 404) return "Depo ya da menu.json bulunamadı. Kullanıcı adı ve depo adını kontrol edin.";
+    if (st === 409) return "Menü başka bir yerden değiştirilmiş. Sayfayı yenileyip tekrar deneyin.";
+    return "GitHub'a ulaşılamadı (kod " + st + "). İnternet bağlantısını kontrol edip tekrar deneyin.";
+  }
+
+  /* ---------- giriş ---------- */
+  function renderLogin(msg) {
+    root.innerHTML =
+      '<div class="wrap login"><h1 style="margin:0;font-family:var(--display);font-weight:400;color:var(--mustard)">Menü yönetimi</h1>' +
+      '<div class="help">Menüyü düzenlemek için GitHub giriş anahtarınızı girin. Anahtar sadece bu cihazda saklanır; müşteriler bu sayfayı kullanamaz.' +
+      '<ol><li>github.com → Settings → Developer settings → Fine-grained tokens → <b>Generate new token</b></li>' +
+      '<li>Repository access: <b>Only select repositories</b> → menünün deposunu seçin</li>' +
+      '<li>Permissions → Repository → <b>Contents: Read and write</b></li>' +
+      '<li>Expiration: <b>No expiration</b> (ya da uzun bir süre) seçip oluşturun, çıkan anahtarı aşağıya yapıştırın</li></ol></div>' +
+      '<div class="f"><label for="owner">GitHub kullanıcı adı</label><input id="owner" autocomplete="username" value="' + esc(cfg.owner || "") + '"></div>' +
+      '<div class="f"><label for="repo">Depo adı</label><input id="repo" value="' + esc(cfg.repo || "") + '"></div>' +
+      '<div class="f"><label for="token">Giriş anahtarı (token)</label><input id="token" type="password" autocomplete="off" value="' + esc(cfg.token || "") + '"></div>' +
+      '<div class="tools"><button class="btn primary" id="go" type="button">Giriş yap</button><a class="btn" href="./">Menüye dön</a></div>' +
+      '<div class="status' + (msg ? " err" : "") + '" id="status" role="status">' + esc(msg || "") + "</div></div>";
+    document.getElementById("go").onclick = function () {
+      cfg.owner = document.getElementById("owner").value.trim();
+      cfg.repo = document.getElementById("repo").value.trim();
+      cfg.token = document.getElementById("token").value.trim();
+      if (!cfg.owner || !cfg.repo || !cfg.token) { renderLogin("Üç alanı da doldurun."); return; }
+      saveCfg(); start();
+    };
+  }
+
+  function start() {
+    root.innerHTML = '<div class="wrap login"><p class="loading">Menü yükleniyor…</p></div>';
+    api("GET").then(function (j) {
+      if (j._status !== 200) { renderLogin(errText(j._status)); return; }
+      sha = j.sha; state = JSON.parse(b64dec(j.content)); dirty = false; render();
+    }).catch(function () { renderLogin("GitHub'a ulaşılamadı. İnternet bağlantısını kontrol edin."); });
+  }
+
+  /* ---------- düzenleyici ---------- */
+  function touch() { dirty = true; setStatus("Kaydedilmemiş değişiklik var. Müşteriler eski menüyü görüyor.", ""); var b = document.getElementById("save"); if (b) b.disabled = busy; }
+  function setStatus(t, cls) { var el = document.getElementById("status"); if (el) { el.textContent = t; el.className = "status" + (cls ? " " + cls : ""); } }
+
+  function render() {
+    var gopts = function (sel) { return state.groups.map(function (g) { return "<option" + (g === sel ? " selected" : "") + ">" + esc(g) + "</option>"; }).join(""); };
+    var h = '<div class="abar"><div class="wrap"><h1>Menü yönetimi</h1>' +
+      '<a class="btn" href="./" target="_blank" rel="noopener">Menüyü gör</a>' +
+      '<button class="btn primary" id="save" type="button"' + (dirty ? "" : " disabled") + ">Kaydet ve yayınla</button>" +
+      '<button class="btn small" id="logout" type="button">Çıkış</button>' +
+      '<div class="status" id="status" role="status"></div></div></div><div class="wrap">';
+    h += '<div class="help">Fiyatı sadece sayı olarak yazın (ör. 25 veya 37,50); boş bırakılan fiyat menüde görünmez. “Satışta” kutusunu kaldırınca ürün menüden gizlenir ama silinmez. <b>Kaydet ve yayınla</b>’ya bastıktan sonra menü 1–2 dakika içinde güncellenir.</div>';
+    state.cats.forEach(function (c, ci) {
+      var del = armed === "c" + c.id;
+      h += '<section class="acat" data-c="' + c.id + '"><div class="acat-head">' +
+        '<div class="f"><label for="cn-' + c.id + '">Kategori</label><input id="cn-' + c.id + '" data-k="cname" value="' + esc(c.name) + '"></div>' +
+        '<div class="f"><label for="cg-' + c.id + '">Bölüm</label><select id="cg-' + c.id + '" data-k="cgroup">' + gopts(c.group) + "</select></div>" +
+        '<div class="tools"><button class="btn small" type="button" data-a="cup"' + (ci === 0 ? " disabled" : "") + ' aria-label="Kategoriyi yukarı taşı">↑</button>' +
+        '<button class="btn small" type="button" data-a="cdown"' + (ci === state.cats.length - 1 ? " disabled" : "") + ' aria-label="Kategoriyi aşağı taşı">↓</button>' +
+        '<button class="btn small danger' + (del ? " armed" : "") + '" type="button" data-a="cdel">' + (del ? "Emin misiniz? Sil" : "Kategoriyi sil") + "</button></div></div><div class=\"aitems\">";
+      c.items.forEach(function (it, ii) {
+        var idel = armed === "i" + it.id;
+        h += '<div class="aitem' + (it.on ? "" : " off") + '" data-i="' + it.id + '">' +
+          '<div class="f"><label for="in-' + it.id + '">Ürün adı</label><input id="in-' + it.id + '" data-k="name" value="' + esc(it.name) + '"></div>' +
+          '<div class="f ds-f"><label for="id-' + it.id + '">Açıklama (isteğe bağlı)</label><input id="id-' + it.id + '" data-k="desc" value="' + esc(it.desc) + '"></div>' +
+          '<div class="f"><label for="ip-' + it.id + '">Fiyat ₺</label><input id="ip-' + it.id + '" data-k="price" inputmode="decimal" placeholder="—" value="' + esc(it.price) + '"></div>' +
+          '<div class="tools"><label class="chk"><input type="checkbox" id="io-' + it.id + '" data-k="on"' + (it.on ? " checked" : "") + "> Satışta</label>" +
+          '<button class="btn small" type="button" data-a="iup"' + (ii === 0 ? " disabled" : "") + ' aria-label="Yukarı">↑</button>' +
+          '<button class="btn small" type="button" data-a="idown"' + (ii === c.items.length - 1 ? " disabled" : "") + ' aria-label="Aşağı">↓</button>' +
+          '<button class="btn small danger' + (idel ? " armed" : "") + '" type="button" data-a="idel">' + (idel ? "Emin misiniz?" : "Sil") + "</button></div></div>";
+      });
+      h += '</div><div><button class="btn small" type="button" data-a="iadd">+ Ürün ekle</button></div></section>';
+    });
+    h += '<div class="tools" style="margin-block:14px"><button class="btn" type="button" id="cadd">+ Kategori ekle</button></div>';
+    var inf = state.info || (state.info = {});
+    h += '<section class="acat"><div class="f"><label for="inf-phone">Sipariş telefonu</label><input id="inf-phone" data-k="phone" value="' + esc(inf.phone) + '"></div>' +
+      '<div class="f"><label for="inf-address">Adres</label><input id="inf-address" data-k="address" value="' + esc(inf.address) + '"></div>' +
+      '<div class="f"><label for="inf-instagram">Instagram kullanıcı adı</label><input id="inf-instagram" data-k="instagram" value="' + esc(inf.instagram) + '"></div></section></div>';
+    root.innerHTML = h;
+    if (dirty) setStatus("Kaydedilmemiş değişiklik var. Müşteriler eski menüyü görüyor.", "");
+  }
+
+  function findCat(el) { var s = el.closest("[data-c]"); return s ? state.cats.find(function (c) { return c.id === s.dataset.c; }) : null; }
+  function findItem(c, el) { var r = el.closest("[data-i]"); return r && c ? c.items.find(function (i) { return i.id === r.dataset.i; }) : null; }
+  function move(a, i, d) { var j = i + d; if (j < 0 || j >= a.length) return; var t = a[i]; a[i] = a[j]; a[j] = t; }
+
+  root.addEventListener("input", function (e) {
+    if (!state) return; var el = e.target, k = el.dataset.k; if (!k) return;
+    if (k === "phone" || k === "address" || k === "instagram") { state.info[k] = k === "instagram" ? el.value.replace(/^@/, "").trim() : el.value; touch(); return; }
+    var c = findCat(el); if (!c) return;
+    if (k === "cname") { c.name = el.value; touch(); return; }
+    if (k === "cgroup") { c.group = el.value; touch(); return; }
+    var it = findItem(c, el); if (!it) return;
+    if (k === "on") { it.on = el.checked; el.closest(".aitem").classList.toggle("off", !it.on); } else it[k] = el.value;
+    touch();
+  });
+  root.addEventListener("change", function (e) { if (state && e.target.dataset.k === "cgroup") { var c = findCat(e.target); if (c) { c.group = e.target.value; touch(); } } });
+  root.addEventListener("click", function (e) {
+    if (!state) return; var t = e.target.closest("button"); if (!t) return;
+    if (t.id === "save") { save(); return; }
+    if (t.id === "logout") { cfg.token = ""; saveCfg(); state = null; renderLogin(""); return; }
+    if (t.id === "cadd") { state.cats.push({ id: uid("c"), group: state.groups[0], name: "Yeni kategori", desc: "", items: [{ id: uid("i"), name: "Yeni ürün", desc: "", price: "", on: true }] }); armed = null; touch(); render(); var l = root.querySelectorAll(".acat[data-c]"); l[l.length - 1].scrollIntoView({ block: "center" }); return; }
+    var a = t.dataset.a; if (!a) return; var c = findCat(t); if (!c) return; var ci = state.cats.indexOf(c);
+    if (a === "cup") move(state.cats, ci, -1);
+    else if (a === "cdown") move(state.cats, ci, 1);
+    else if (a === "cdel") { if (armed !== "c" + c.id) { armed = "c" + c.id; render(); return; } state.cats.splice(ci, 1); }
+    else if (a === "iadd") { var n = { id: uid("i"), name: "", desc: "", price: "", on: true }; c.items.push(n); armed = null; touch(); render(); var inp = document.getElementById("in-" + n.id); if (inp) inp.focus(); return; }
+    else { var it = findItem(c, t); if (!it) return; var ii = c.items.indexOf(it);
+      if (a === "iup") move(c.items, ii, -1); else if (a === "idown") move(c.items, ii, 1);
+      else if (a === "idel") { if (armed !== "i" + it.id) { armed = "i" + it.id; render(); return; } c.items.splice(ii, 1); } }
+    armed = null; touch(); render();
+  });
+
+  function save() {
+    if (busy) return; busy = true;
+    var b = document.getElementById("save"); if (b) b.disabled = true;
+    setStatus("Kaydediliyor…", "");
+    var d = JSON.parse(JSON.stringify(state));
+    d.cats.forEach(function (c) { c.name = c.name.trim() || "Kategori"; c.items = c.items.filter(function (i) { return i.name.trim(); }); c.items.forEach(function (i) { i.name = i.name.trim(); i.desc = (i.desc || "").trim(); i.price = String(i.price || "").trim(); }); });
+    d.guncelleme = new Date().toISOString();
+    api("PUT", { message: "Menü güncellendi", content: b64enc(JSON.stringify(d, null, 1)), sha: sha }).then(function (j) {
+      busy = false;
+      if (j._status === 200 || j._status === 201) { sha = j.content.sha; state = d; dirty = false; render(); setStatus("Kaydedildi. Menü 1–2 dakika içinde güncellenecek.", "ok"); return; }
+      setStatus(errText(j._status), "err"); var bb = document.getElementById("save"); if (bb) bb.disabled = false;
+    }).catch(function () { busy = false; setStatus("GitHub'a ulaşılamadı. Değişiklikleriniz duruyor; bağlantıyı kontrol edip tekrar kaydedin.", "err"); var bb = document.getElementById("save"); if (bb) bb.disabled = false; });
+  }
+
+  window.addEventListener("beforeunload", function (e) { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+  if (cfg.owner && cfg.repo && cfg.token) start(); else renderLogin("");
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,763 @@
+{
+ "groups": [
+  "Simit & Poğaça",
+  "Kahvaltı",
+  "Sıcak İçecekler",
+  "Tatlılar",
+  "Soğuk İçecekler",
+  "Paket Ürünler"
+ ],
+ "cats": [
+  {
+   "id": "c1",
+   "group": "Simit & Poğaça",
+   "name": "Simitler",
+   "desc": "",
+   "items": [
+    {
+     "id": "i1",
+     "name": "Tereyağlı Simit",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i2",
+     "name": "Osmaniye Simidi",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i3",
+     "name": "Ankara Simidi",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i4",
+     "name": "Sütlü Simit",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c2",
+   "group": "Simit & Poğaça",
+   "name": "Poğaçalar",
+   "desc": "",
+   "items": [
+    {
+     "id": "i5",
+     "name": "Peynirli Poğaça",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i6",
+     "name": "Zeytinli Poğaça",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i7",
+     "name": "Kaşarlı Poğaça",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i8",
+     "name": "Patatesli Poğaça",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c3",
+   "group": "Simit & Poğaça",
+   "name": "Açmalar",
+   "desc": "",
+   "items": [
+    {
+     "id": "i9",
+     "name": "Sade Açma",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i10",
+     "name": "Zeytinli Açma",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i11",
+     "name": "Peynirli Açma",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c4",
+   "group": "Simit & Poğaça",
+   "name": "Börek Çeşitleri",
+   "desc": "",
+   "items": [
+    {
+     "id": "i12",
+     "name": "Sigara Böreği",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i13",
+     "name": "Gül Böreği",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i14",
+     "name": "Su Böreği",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i15",
+     "name": "Ay Böreği",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i16",
+     "name": "Gözleme",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i17",
+     "name": "Sıkma",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i18",
+     "name": "Katmer",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i19",
+     "name": "Yağlı Bazlama",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c5",
+   "group": "Kahvaltı",
+   "name": "Kahvaltı Tabakları",
+   "desc": "",
+   "items": [
+    {
+     "id": "i20",
+     "name": "Klasik Kahvaltı",
+     "desc": "Reçel, siyah zeytin, yeşil zeytin, tereyağ, kaşar peyniri, beyaz peynir, krem peynir, salatalık, domates, sigara böreği, haşlanmış yumurta, bal, çikolata, 2 çay",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i21",
+     "name": "Aperatif Kahvaltı",
+     "desc": "Zeytin, beyaz peynir, reçel, yumurta, domates, salatalık, 1 çay",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c6",
+   "group": "Kahvaltı",
+   "name": "Tostlar",
+   "desc": "",
+   "items": [
+    {
+     "id": "i22",
+     "name": "Klasik Tost",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i23",
+     "name": "Simit Tost",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i24",
+     "name": "Atom Tost",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c7",
+   "group": "Kahvaltı",
+   "name": "Menemen",
+   "desc": "",
+   "items": [
+    {
+     "id": "i25",
+     "name": "Klasik Menemen",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i26",
+     "name": "Soğansız Menemen",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c8",
+   "group": "Kahvaltı",
+   "name": "Sahanda Yumurta",
+   "desc": "",
+   "items": [
+    {
+     "id": "i27",
+     "name": "Sahanda Yumurta",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i28",
+     "name": "Sucuklu Yumurta",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i29",
+     "name": "Simit Omlet",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c9",
+   "group": "Sıcak İçecekler",
+   "name": "Çaylar",
+   "desc": "",
+   "items": [
+    {
+     "id": "i30",
+     "name": "Yerli Çay",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i31",
+     "name": "Kaçak Çay",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i32",
+     "name": "Ada Çayı",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i33",
+     "name": "Yeşil Çay",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i34",
+     "name": "Ihlamur",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i35",
+     "name": "Elma Çayı",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i36",
+     "name": "Kuşburnu",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i37",
+     "name": "Nane Limon",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c10",
+   "group": "Sıcak İçecekler",
+   "name": "Kahveler",
+   "desc": "",
+   "items": [
+    {
+     "id": "i38",
+     "name": "Türk Kahvesi",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i39",
+     "name": "Menengiç Kahvesi",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i40",
+     "name": "Osmanlı Kahvesi",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i41",
+     "name": "Dibek Kahvesi",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i42",
+     "name": "Damla Sakızlı Türk Kahvesi",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c11",
+   "group": "Sıcak İçecekler",
+   "name": "Espresso",
+   "desc": "",
+   "items": [
+    {
+     "id": "i43",
+     "name": "Espresso",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i44",
+     "name": "Americano",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i45",
+     "name": "Macchiato",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i46",
+     "name": "Latte",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i47",
+     "name": "Mocha",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i48",
+     "name": "White Mocha",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i49",
+     "name": "Nescafe",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i50",
+     "name": "Sıcak Çikolata",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c12",
+   "group": "Tatlılar",
+   "name": "Tatlılar",
+   "desc": "",
+   "items": [
+    {
+     "id": "i51",
+     "name": "Sütlaç",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i52",
+     "name": "Trileçe",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i53",
+     "name": "Islak Kek",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i54",
+     "name": "Supangle",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i55",
+     "name": "Baklava",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i56",
+     "name": "Ekler",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i57",
+     "name": "Adet Pastalar",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c13",
+   "group": "Soğuk İçecekler",
+   "name": "Ice Espresso",
+   "desc": "",
+   "items": [
+    {
+     "id": "i58",
+     "name": "Ice Americano",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i59",
+     "name": "Ice Latte",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i60",
+     "name": "Ice Chocolatte",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i61",
+     "name": "Ice Mocha",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i62",
+     "name": "Ice White Mocha",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c14",
+   "group": "Soğuk İçecekler",
+   "name": "Taze Sıkılmış",
+   "desc": "",
+   "items": [
+    {
+     "id": "i63",
+     "name": "Portakal Suyu",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i64",
+     "name": "Havuç Suyu",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i65",
+     "name": "Vişne Suyu",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i66",
+     "name": "Limonata",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i67",
+     "name": "Muzlu Süt",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i68",
+     "name": "Çilekli Süt",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i69",
+     "name": "Ballı Süt",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i70",
+     "name": "Atom",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c15",
+   "group": "Soğuk İçecekler",
+   "name": "Milkshake",
+   "desc": "",
+   "items": [
+    {
+     "id": "i71",
+     "name": "Çilekli",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i72",
+     "name": "Muzlu",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i73",
+     "name": "Vanilyalı",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i74",
+     "name": "Çikolatalı",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i75",
+     "name": "Böğürtlenli",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i76",
+     "name": "Oreolu",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i77",
+     "name": "Karamelli",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c16",
+   "group": "Soğuk İçecekler",
+   "name": "Soğuk İçecekler",
+   "desc": "",
+   "items": [
+    {
+     "id": "i78",
+     "name": "Meyve Suyu",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i79",
+     "name": "Kola",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i80",
+     "name": "Fanta",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i81",
+     "name": "Sprite",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i82",
+     "name": "Meyveli Soda",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i83",
+     "name": "Sade Soda",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i84",
+     "name": "Ice Tea",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i85",
+     "name": "Ayran",
+     "desc": "",
+     "price": "",
+     "on": true
+    },
+    {
+     "id": "i86",
+     "name": "Su",
+     "desc": "",
+     "price": "",
+     "on": true
+    }
+   ]
+  },
+  {
+   "id": "c17",
+   "group": "Paket Ürünler",
+   "name": "Ev Yapımı",
+   "desc": "",
+   "items": [
+    {
+     "id": "i87",
+     "name": "Meşhur Osmaniye Bayram Kömbesi (900 gr)",
+     "desc": "%100 el yapımı. İçindekiler: un, şeker, tahin, yedi çeşit baharat, karbonat, maya, susam, sıvı yağ.",
+     "price": "",
+     "on": true
+    }
+   ]
+  }
+ ],
+ "info": {
+  "instagram": "simitkoskukafe",
+  "phone": "0541 276 26 16",
+  "address": "Raufbey Mah. Adnan Menderes Cd. No: 21/B, Osmaniye"
+ },
+ "guncelleme": ""
+}
