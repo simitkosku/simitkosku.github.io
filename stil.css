@@ -76,3 +76,27 @@ footer strong { color: var(--cream) }
   .aitem .tools { grid-column: 1 / -1; order: 4; justify-content: flex-start }
 }
 @media (prefers-reduced-motion: no-preference) { .chip, .btn { transition: background .15s, border-color .15s, color .15s } }
+
+/* ---------- ürün görselleri (menü) ---------- */
+.item.has-img { display: flex; align-items: center; gap: 12px }
+.item .txt { flex: 1; min-width: 0 }
+.ph { flex: none; width: 64px; height: 64px; padding: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--panel2); cursor: zoom-in }
+.ph img { display: block; width: 100%; height: 100%; object-fit: cover }
+.lb { border: 0; padding: 0; background: transparent; max-width: min(92vw, 720px); color: var(--cream); text-align: center }
+.lb::backdrop { background: rgba(10, 9, 8, .86) }
+.lb img { display: block; max-width: 100%; max-height: 74vh; margin: 0 auto; border-radius: 14px; background: var(--panel) }
+.lb p { margin: 10px 0 2px; font-weight: 700 }
+.lb-x { color: var(--muted); font-size: .85rem }
+
+/* ---------- ürün görselleri (yönetim) ---------- */
+.login-title { margin: 0; font-family: var(--display); font-weight: 400; color: var(--mustard) }
+.tools.gap { margin-block: 14px }
+.aimg { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px }
+.aimg img, .noimg { flex: none; width: 56px; height: 56px; border-radius: 10px; border: 1px solid var(--line); object-fit: cover; background: var(--panel2) }
+.noimg { display: grid; place-items: center; font-size: .62rem; color: var(--muted); text-align: center; line-height: 1.1 }
+.btn.file { position: relative; overflow: hidden }
+.btn.file input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; font-size: 0 }
+.btn.file:focus-within { outline: 2px solid var(--mustard); outline-offset: 2px }
+@media (max-width: 620px) { .aitem .aimg { order: 5 } }
+.login .chk { white-space: normal; align-items: flex-start }
+.lb:focus-visible { outline: none }
